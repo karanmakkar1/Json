@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Products</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body>
+	<!-- STEP 1: Build out a HEADER and a SECTION element -->
+	<header>
+
+	</header>
+	<section>
+	
+
+	</section>
+	<footer>
+
+	</footer>
+	<script>
+		/* STEP 2: Bind the HEADER and the SECTION elements above to variables */
+		let header = document.querySelector('header');
+		let section = document.querySelector('section');
+
+		// STEP 3 - Store JSON URL in a variable
+
+		let requestURL = ' https://karanmakkar1.github.io/Json/.';
+
+		//Step 4 - Create a new XHR object 
+		let request = new XMLHttpRequest(); 
+
+		// open a new request using the open method of XHR object 
+		request.open('GET', requestURL); 
+		//set up the response type 
+
+		request.responseType = 'json'; 
+
+		//send the request 
+		request.send();
+
+		//set up an event handler to listen for onload, so we don't do anything until the data return 
+		request.onload = function() {
+			let products = request.response; 
+			console.log(products); 
+			populateHeader(products); 
+			features(products); 
+		}
+
+		function populateHeader(jsonObj) {
+			let headerH1 = document.createElement('h1'); 
+			headerH1.textContent = jsonObj['companyName'];
+			header.appendChild(headerH1); 
+			let headerPara = document.createElement('p'); 
+			headerPara.textContent = jsonObj['headOffice']; 
+			header.appendChild(headerPara); 
+		}
+
+		function features(jsonObj) {
+			let features = jsonObj['features']; 
+			for(let i = 0; i < features.length; i++) {
+				let article = document.createElement('article');
+				let h2 = document.createElement('h2'); 
+				let img = document.createElement('img'); 
+				let p1 = document.createElement('p'); 
+				let p2 = document.createElement('p'); 
+				let list = document.createElement('ul'); 
+
+				img.setAttribute('src', 'images/' + features[i].image); 
+				img.setAttribute('alt', features[i].name);
+				h2.textContent = features[i].name;
+				p1.textContent = features[i].price;
+				p2.textContent = features[i].description; 
+				
+				let ingredients = features[i].ingredients;
+				for(let j = 0; j < ingredients.length; j++ ) {
+					let listItem = document.createElement('li'); 
+					listItem.textContent = ingredients[j]; 
+					list.appendChild(listItem); 
+				}
+
+				article.appendChild(img);
+				article.appendChild(h2); 
+				article.appendChild(p1); 
+				article.appendChild(p2); 
+				article.appendChild(list); 
+				section.appendChild(article); 
+			}
+		}    
+    
+		</script>
+	</body>
+</html>
